@@ -1,0 +1,250 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    user-select: none;
+}
+html, body{
+    height: 100%;
+    width: 100%;
+    background-color: rgb(77, 77, 77);
+    margin: 0;
+    padding: 0;
+}
+
+.card{
+    display: flex;
+    max-height: 92%;
+    align-items: center;
+    flex-direction: column;
+    min-height: 300px;
+    min-width: 300px;
+    position: relative;
+    max-width: 300px;
+    background-color: rgb(37, 37, 37);
+    border-radius: 20px;
+    margin: 2rem;
+    height: fit-content;
+    overflow-y: scroll;
+}
+
+.cards{
+    display: flex;
+    overflow-x: scroll;
+    width: auto;
+    height: 100%;
+}
+
+
+.addItemBtn{
+    padding: .4rem;
+    width: 50%;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid white;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    transition: ease .3s all;
+    margin: 1rem;
+    /* position: relative; */
+}
+
+.addItemBtn:hover{
+    background-color: white;
+    color: black;
+}
+
+.item-input{
+    resize: none;
+    outline: none;
+    font-size: 1rem;
+    margin: .5rem;
+    min-height: 100px;
+    color: black;
+}
+
+.item-input:focus{
+    border: 1px solid white;
+}
+
+.item-card{
+    background-color: black;
+    width: 90%;
+    border-radius: 5px;
+    margin: .5rem;
+    border-left: 4px solid black;
+    position: relative;
+}
+
+.item-text{
+    padding-left: 1rem;
+}
+
+button.card{
+    outline: none;
+    border: none;
+    opacity: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 200px;
+    color: rgba(255, 255, 255, 0.438);
+    transition: ease .3s all;
+}
+
+button.card:hover{
+    opacity: 100%;
+    cursor: pointer;
+}
+
+.title-input{
+    border: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    height: 2rem;
+    padding: .5rem;
+    font-size: 1rem;
+    background-color: rgba(0, 0, 0, 0.527);
+    outline: white;
+}
+
+.title{
+    padding: .3rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+
+.no-title{
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.178);
+    display: none;
+}
+
+.message{
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 20rem;
+    width: 35rem;
+    border-radius: 5px;
+    background-color: black;
+    text-align: center;
+}
+
+.message-text{
+    font-size: 1.3rem;
+    padding: .2rem;
+}
+
+.sad-face{
+    font-size: 3rem;
+}
+
+.message-okay{
+    height: 3rem;
+    width: 5rem;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid white;
+    background-color: transparent;
+    margin: 1.2rem;
+    color: white;
+    cursor: pointer;
+    transition: ease .3s all;
+}
+
+.message-okay:hover{
+    background-color: white;
+    color: black;
+}
+
+.three-dots{
+    margin-right: .2rem;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color: rgb(190, 190, 190);
+    opacity: 20%;
+    right: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: .5rem;
+    transition: ease .3s all;
+}
+
+.three-dots:hover{
+    opacity: 100%;
+}
+
+.areaButtons{
+    width: 100%;
+    height: 1.4rem;
+    display: flex;
+    padding-bottom: 1rem;
+    padding-left: 1.3rem;
+}
+
+.add-item-button{
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    outline: none;
+    height: 2rem;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.cancel-item-button{
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    margin-left: .5rem;
+    border-radius: 5px;
+    width: 2rem;
+    outline: none;
+    height: 2rem;
+    border: 1px solid black;
+}
+
+.delete-card-button{
+    position: absolute;
+    color: rgb(170, 170, 170);
+    opacity: 20%;
+    transition: ease .3s all;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    margin: 1rem;
+}
+
+.delete-card-button:hover{
+    opacity: 100%;
+}
+
+.delete-add-buttons{
+    width: 100%;
+    text-align: center;
+}
+
+.mode{
+    color: white;
+    position: absolute;
+    margin: 1rem;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    transition: ease .3s all;
+    border-radius: 50%;
+}
+
+.mode:hover{
+    transform: scale(1.2);
+}
