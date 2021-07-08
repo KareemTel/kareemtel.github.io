@@ -1,0 +1,270 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+}
+
+*::-webkit-scrollbar{
+    display: none;
+}
+
+
+html, body{
+    height: 100%;
+    width: 100%;
+    /* background-color: #5cdb95; */
+    background-color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.card{
+    display: flex;
+    max-height: 92%;
+    align-items: center;
+    flex-direction: column;
+    min-height: 300px;
+    min-width: 300px;
+    position: relative;
+    max-width: 300px;
+    background-color: rgb(219, 219, 219);
+    border-radius: 20px;
+    margin: 2rem;
+    height: fit-content;
+    overflow-y: scroll;
+}
+
+.cards{
+    display: flex;
+    overflow-x: scroll;
+    width: auto;
+    height: 100%;
+}
+
+
+.addItemBtn{
+    padding: .4rem;
+    width: 50%;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
+    transition: ease .3s all;
+    margin: 1rem;
+    /* position: relative; */
+}
+
+.addItemBtn:hover{
+    background-color: black;
+    color: white;
+}
+
+.item-input{
+    resize: none;
+    outline: none;
+    font-size: 1rem;
+    margin: .5rem;
+    min-height: 100px;
+}
+
+.item-input:focus{
+    border: 1px solid black;
+}
+
+.item-card{
+    background-color: white;
+    width: 90%;
+    border-radius: 5px;
+    margin: .5rem;
+    border-left: 4px solid black;
+    position: relative;
+}
+
+.item-text{
+    padding-left: 1rem;
+}
+
+button.card{
+    outline: none;
+    border: none;
+    opacity: 50%;
+    justify-content: center;
+    align-items: center;
+    font-size: 200px;
+    color: rgba(0, 0, 0, 0.438);
+    transition: ease .3s all;
+}
+
+button.card:hover{
+    opacity: 100%;
+    cursor: pointer;
+}
+
+.title-input{
+    border: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    height: 2rem;
+    padding: .5rem;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.527);
+    outline: black;
+}
+
+.title{
+    padding: .3rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+
+.no-title{
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.178);
+    display: none;
+}
+
+.message{
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: auto;
+    width: 95%;
+    max-width: 600px;
+    border-radius: 5px;
+    background-color: white;
+    text-align: center;
+}
+
+.message-text{
+    font-size: 1.3rem;
+    padding: .2rem;
+}
+
+.sad-face{
+    font-size: 3rem;
+}
+
+.message-okay{
+    height: 3rem;
+    width: 5rem;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+    background-color: transparent;
+    margin: 1.2rem;
+    color: black;
+    cursor: pointer;
+    transition: ease .3s all;
+}
+
+.message-okay:hover{
+    background-color: black;
+    color: white;
+}
+
+.three-dots, .edit-button{
+    margin-right: .2rem;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    color: rgb(98, 98, 98);
+    opacity: 20%;
+    right: 0;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: .5rem;
+    transition: ease .3s all;
+}
+
+.edit-button{
+    margin-right: 1.5rem;
+}
+
+.three-dots:hover, .edit-button:hover{
+    opacity: 100%;
+}
+
+.areaButtons{
+    width: 100%;
+    height: 1.4rem;
+    display: flex;
+    padding-bottom: 1rem;
+    padding-left: 1.3rem;
+}
+
+.newAreaButtons{
+    width: 100%;
+    height: 1.4rem;
+    display: flex;
+    padding-bottom: 1rem;
+    padding-left: 2.8rem;
+}
+
+.add-item-button{
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+    height: 2rem;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.cancel-item-button{
+    cursor: pointer;
+    background-color: transparent;
+    color: black;
+    margin-left: .5rem;
+    border-radius: 5px;
+    width: 2rem;
+    outline: none;
+    height: 2rem;
+    border: 1px solid black;
+}
+
+.delete-card-button{
+    position: absolute;
+    color: rgb(98, 98, 98);
+    opacity: 20%;
+    transition: ease .3s all;
+    cursor: pointer;
+    left: 0;
+    top: 0;
+    margin: 1rem;
+}
+
+.delete-card-button:hover{
+    opacity: 100%;
+}
+
+.delete-add-buttons{
+    width: 100%;
+    text-align: center;
+}
+
+.mode{
+    color: black;
+    position: absolute;
+    margin: 1rem;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    transition: ease .3s all;
+    border-radius: 50%;
+}
+
+.mode:hover{
+    transform: scale(1.2);
+}
