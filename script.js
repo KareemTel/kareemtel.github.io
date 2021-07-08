@@ -46,6 +46,13 @@ function refresh() {
                         threeDots.innerHTML = 'delete';
                         threeDots.classList.add('three-dots');
                         threeDots.classList.add('material-icons');
+                        editButton = document.createElement('span');
+                        editButton.classList.add('edit-button');
+                        editButton.classList.add('material-icons');
+                        editButton.innerHTML = 'edit';
+                        editButton.onclick = function(){
+                            edit(this)
+                        }
                         threeDots.onclick = function () {
                             let title = this.parentElement.parentElement.firstElementChild.innerText;
                             if (localStorage.getItem(title) === null) {
@@ -58,6 +65,7 @@ function refresh() {
                             this.parentElement.remove()
                         }
                         itemCard.appendChild(threeDots);
+                        itemCard.appendChild(editButton);
                         //save item text here
                         saveText(itemText.innerText, this)
                     } else {
@@ -345,7 +353,6 @@ function getTitle() {
 
 function saveText(text, thisElement) {
     finalThisElement = thisElement.parentElement.parentElement.firstElementChild.innerText;
-    console.log(thisElement.parentElement.parentElement.firstElementChild)
     let texts;
     if (localStorage.getItem(finalThisElement) === null) {
         texts = [];
@@ -431,3 +438,91 @@ if (localStorage.getItem('current') === 'dark') {
     theme.href = "light.css";
     document.getElementById('modeChange').innerText = 'dark_mode';
 }
+
+
+
+// function edit(myElement){
+//     newTextArea = document.createElement('textarea');
+//     newTextArea.classList.add('item-input')
+//     newTextArea.id = 'itemInput';
+//     newTextArea.placeholder = 'Item Here';
+//     newTextArea.cols = '30';
+//     newTextArea.rows = '5';
+//     textareaButtons = document.createElement('div');
+//     textareaButtons.classList.add('newAreaButtons');
+//     addButton = document.createElement('button');
+//     addButton.classList.add('add-item-button');
+//     addButton.innerText = 'Edit Item';
+//     addButton.onclick = function(){
+//         newTitle = this.parentElement.parentElement.firstElementChild.innerText;
+//         localStorage.getItem(newTitle);
+//         console.log(localStorage.getItem(newTitle).indexOf(myElement.parentNode.firstElementChild.innerText));
+//         newTextArea.style.display = 'none';
+//         textareaButtons.style.display = 'none';
+//         itemCard = document.createElement('div');
+//         itemCard.classList.add('item-card');
+//         itemText = document.createElement('p');
+//         itemText.innerText = newTextArea.value;
+//         newTextArea.value = '';
+//         itemText.classList.add('item-text');
+//         itemCard.appendChild(itemText);
+//         threeDots = document.createElement('span');
+//         threeDots.innerHTML = 'delete';
+//         threeDots.classList.add('three-dots');
+//         threeDots.classList.add('material-icons');
+//         threeDots.onclick = function () {
+//             let title = myElement.parentElement.parentElement.firstElementChild.innerText;
+//             console.log(title)
+//             if (localStorage.getItem(title) === null) {
+//                 titles = [];
+//             } else {
+//                 titles = JSON.parse(localStorage.getItem(title))
+//             }
+//             titles.splice(titles.indexOf(myElement.parentElement.parentElement.firstElementChild.innerText), 1)
+//             localStorage.setItem(title, JSON.stringify(titles));
+//             myElement.parentElement.remove()
+//         }
+        
+//         itemCard.appendChild(threeDots);
+//         this.parentElement.parentElement.replaceChild(itemCard, newTextArea)
+//     }
+//     cancelButton = document.createElement('button');
+//     cancelButton.classList.add('cancel-item-button');
+//     cancelButton.innerText = 'X';
+//     previousItemText = myElement.parentElement.firstElementChild.innerText;
+//     cancelButton.onclick = function(){
+//         newTextArea.style.display = 'none';
+//         textareaButtons.style.display = 'none';
+//         itemCard = document.createElement('div');
+//         itemCard.classList.add('item-card');
+//         itemText = document.createElement('p');
+//         itemText.innerText = previousItemText;
+//         itemText.classList.add('item-text');
+//         itemCard.appendChild(itemText);
+//         threeDots = document.createElement('span');
+//         threeDots.innerHTML = 'delete';
+//         threeDots.classList.add('three-dots');
+//         threeDots.classList.add('material-icons');
+//         threeDots.onclick = function () {
+//             let title = myElement.parentElement.parentElement.firstElementChild.innerText;
+//             console.log(title)
+//             if (localStorage.getItem(title) === null) {
+//                 titles = [];
+//             } else {
+//                 titles = JSON.parse(localStorage.getItem(title))
+//             }
+//             titles.splice(titles.indexOf(myElement.parentElement.parentElement.firstElementChild.innerText), 1)
+//             localStorage.setItem(title, JSON.stringify(titles));
+//             myElement.parentElement.remove()
+//         }
+        
+//         itemCard.appendChild(threeDots);
+//         this.parentElement.parentElement.replaceChild(itemCard, newTextArea)
+
+//     }
+//     textareaButtons.appendChild(addButton);
+//     textareaButtons.appendChild(cancelButton);
+//     myElement.parentElement.parentElement.replaceChild(newTextArea, myElement.parentNode)
+//     newTextArea.parentElement.insertBefore(textareaButtons, newTextArea.parentElement.lastChild)
+    
+// }

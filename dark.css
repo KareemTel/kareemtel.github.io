@@ -1,8 +1,15 @@
 *{
     font-family: Arial, Helvetica, sans-serif;
-    color: white;
     user-select: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;
+    color: white;
 }
+
+*::-webkit-scrollbar{
+    display: none;
+}
+
 html, body{
     height: 100%;
     width: 100%;
@@ -132,8 +139,9 @@ button.card:hover{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 20rem;
-    width: 35rem;
+    height: auto;
+    width: 95%;
+    max-width: 600px;
     border-radius: 5px;
     background-color: black;
     text-align: center;
@@ -192,6 +200,7 @@ button.card:hover{
     padding-bottom: 1rem;
     padding-left: 1.3rem;
 }
+
 
 .add-item-button{
     background-color: white;
