@@ -1,28 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Management</title>
-    <link rel="stylesheet" href="style.css" id="theme-link">
+    <!-- Primary Meta Tags -->
+    <title>Cryllo | Cryptocurrency Prices.</title>
+    <meta name="title" content="Cryllo | Cryptocurrency Prices.">
+    <meta name="description"
+        content="Get crypto prices, symbols, 24 hour change percentage, easy to use, dark / light mode, and much more...">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kareemtel.github.io/">
+    <meta property="og:title" content="Cryllo | Cryptocurrency Prices.">
+    <meta property="og:description"
+        content="Get crypto prices, symbols, 24 hour change percentage, easy to use, dark / light mode, and much more...">
+    <meta property="og:image" content="accurate crypto prices.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://kareemtel.github.io/">
+    <meta property="twitter:title" content="Cryllo | Cryptocurrency Prices.">
+    <meta property="twitter:description"
+        content="Get crypto prices, symbols, 24 hour change percentage, easy to use, dark / light mode, and much more...">
+    <meta property="twitter:image" content="accurate crypto prices.png">
+    <link id="theme-link" rel="stylesheet" href="dark.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined ">
     <script defer src="script.js"></script>
+    <script src="/chart.js/dist/chart.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+    <link rel="icon" 
+      type="image/png" 
+      href="cryllo.png">
 </head>
+
 <body>
-    <div id="cards" class="cards">
-        <button id="addCardBtn" class="card">&#43;</button>
-    </div> 
+    <div class="rotating"></div>
 
-    <span class="material-icons-outlined mode" id="modeChange">dark_mode</span>
+    <div class="icons">
+        <span class="material-icons mode icon">
+            dark_mode
+        </span>
+    </div>
 
-    <div class="no-title" id="noTitle">
-        <div class="message">
-            <p class="sad-face">:(</p>
-            <p class="message-text">You can't add 2 cards with the same title, you also can't have a card with no title.</p>
-            <button class="message-okay" id="okayMsgBtn">Okay</button>
+    <button class="addStock"><span class="material-icons-outlined">
+            add
+        </span></button>
+
+
+    <div class="mainSearch">
+        <div class="search">
+            <span class="material-icons-outlined searchIcon">
+                search
+            </span>
+            <input class="searchInput" placeholder="Search..." type="text">
         </div>
+        <ul class="searchResults"></ul>
+    </div>
+
+    <div class="cryptos">
+
     </div>
 </body>
+
 </html>

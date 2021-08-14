@@ -1,528 +1,284 @@
-const theme = document.querySelector("#theme-link");
-document.addEventListener('DOMContentLoaded', getTitle);
-document.addEventListener('DOMContentLoaded', getText);
-
-function refresh() {
-    elems = document.querySelectorAll('.addItemBtn')
-    for (var i = 0; i < elems.length; i++) {
-        elems[i].onclick = function () {
-            if (document.getElementById('itemInput') != null) {
-                for (var t = 0; t < document.querySelectorAll('.item-input').length; t++) {
-                    document.querySelectorAll('.item-input')[t].style.display = 'none';
-                    document.querySelectorAll('.areaButtons')[t].style.display = 'none';
-                }
-                // document.getElementById('itemInput').style.display = 'none';
-                for (var k = 0; k < document.querySelectorAll('.addItemBtn').length; k++) {
-                    document.querySelectorAll('.addItemBtn')[k].style.display = 'inline';
-                }
-            }
-
-
-            this.style.display = 'none';
-            newItemInput = document.createElement('textarea');
-            newItemInput.classList.add('item-input');
-            newItemInput.id = 'itemInput';
-            newItemInput.placeholder = 'Item Here';
-            newItemInput.cols = '30';
-            newItemInput.rows = '5';
-            newItemInput.addEventListener('keypress', (e) => {
-                var code = (e.keyCode ? e.keyCode : e.which);
-                if (code == 13) { //Enter keycode
-                    if (/\S/.test(newItemInput.value)) {
-                        newItemInput.style.display = 'none';
-                        addButton.style.display = 'none';
-                        cancelButton.style.display = 'none';
-                        textareaButtons.style.display = 'none';
-                        itemCard = document.createElement('div');
-                        itemCard.classList.add('item-card');
-                        this.parentNode.parentElement.insertBefore(itemCard, this.parentNode)
-                        itemText = document.createElement('p');
-                        itemText.innerText = newItemInput.value;
-                        itemText.classList.add('item-text');
-                        itemCard.appendChild(itemText);
-                        newItemInput.value = '';
-                        this.style.display = 'inline';
-                        threeDots = document.createElement('span');
-                        threeDots.innerHTML = 'delete';
-                        threeDots.classList.add('three-dots');
-                        threeDots.classList.add('material-icons');
-                        editButton = document.createElement('span');
-                        editButton.classList.add('edit-button');
-                        editButton.classList.add('material-icons');
-                        editButton.innerHTML = 'edit';
-                        editButton.onclick = function(){
-                            edit(this)
-                        }
-                        threeDots.onclick = function () {
-                            let title = this.parentElement.parentElement.firstElementChild.innerText;
-                            if (localStorage.getItem(title) === null) {
-                                titles = [];
-                            } else {
-                                titles = JSON.parse(localStorage.getItem(title))
-                            }
-                            titles.splice(titles.indexOf(this.parentElement.firstElementChild.innerText), 1)
-                            localStorage.setItem(title, JSON.stringify(titles));
-                            this.parentElement.remove()
-                        }
-                        itemCard.appendChild(threeDots);
-                        itemCard.appendChild(editButton);
-                        //save item text here
-                        saveText(itemText.innerText, this)
-                    } else {
-                        newItemInput.style.display = 'none';
-                        addButton.style.display = 'none';
-                        cancelButton.style.display = 'none';
-                        textareaButtons.style.display = 'none';
-                        this.style.display = 'inline';
-                    }
-                }
-            });
-            this.parentElement.appendChild(newItemInput);
-            textareaButtons = document.createElement('div');
-            textareaButtons.classList.add('areaButtons');
-            this.parentElement.appendChild(textareaButtons);
-            addButton = document.createElement('button');
-            addButton.classList.add('add-item-button');
-            addButton.innerText = 'Add Item';
-            cancelButton = document.createElement('button');
-            cancelButton.classList.add('cancel-item-button');
-            cancelButton.innerText = 'X';
-            textareaButtons.appendChild(addButton);
-            textareaButtons.appendChild(cancelButton);
-            newItemInput.focus();
-            cancelButton.onclick = function () {
-                newItemInput.style.display = 'none';
-                addButton.style.display = 'none';
-                cancelButton.style.display = 'none';
-                textareaButtons.style.display = 'none';
-                this.style.display = 'none';
-                for (var k = 0; k < document.querySelectorAll('.addItemBtn').length; k++) {
-                    document.querySelectorAll('.addItemBtn')[k].style.display = 'inline';
-                }
-            }
-            addButton.onclick = function () {
-                if (/\S/.test(newItemInput.value)) {
-                    newItemInput.style.display = 'none';
-                    addButton.style.display = 'none';
-                    cancelButton.style.display = 'none';
-                    textareaButtons.style.display = 'none';
-                    itemCard = document.createElement('div');
-                    itemCard.classList.add('item-card');
-                    this.parentElement.parentElement.parentElement.insertBefore(itemCard, this.parentElement.parentElement)
-                    itemText = document.createElement('p');
-                    itemText.innerText = newItemInput.value;
-                    itemText.classList.add('item-text');
-                    itemCard.appendChild(itemText);
-                    newItemInput.value = '';
-                    for (var k = 0; k < document.querySelectorAll('.addItemBtn').length; k++) {
-                        document.querySelectorAll('.addItemBtn')[k].style.display = 'inline';
-                    }
-                    threeDots = document.createElement('span');
-                    threeDots.innerHTML = 'delete';
-                    threeDots.classList.add('three-dots');
-                    threeDots.classList.add('material-icons');
-                    threeDots.onclick = function () {
-                        let title = this.parentElement.parentElement.firstElementChild.innerText;
-                        if (localStorage.getItem(title) === null) {
-                            titles = [];
-                        } else {
-                            titles = JSON.parse(localStorage.getItem(title))
-                        }
-                        titles.splice(titles.indexOf(this.parentElement.parentElement.firstElementChild.innerText), 1)
-                        localStorage.setItem(title, JSON.stringify(titles));
-                        this.parentElement.remove()
-                    }
-                    itemCard.appendChild(threeDots);
-                    //save item text here
-                    saveText(itemText.innerText, this.parentElement)
-                } else {
-                    newItemInput.style.display = 'none';
-                    addButton.style.display = 'none';
-                    cancelButton.style.display = 'none';
-                    textareaButtons.style.display = 'none';
-                    this.style.display = 'none';
-                    for (var k = 0; k < document.querySelectorAll('.addItemBtn').length; k++) {
-                        document.querySelectorAll('.addItemBtn')[k].style.display = 'inline';
-                    }
-                }
-            }
-        }
-    }
-}
-refresh()
-
-document.getElementById('addCardBtn').onclick = function () {
-    document.getElementById('addCardBtn').disabled = true;
-    document.getElementById('addCardBtn').style.cursor = 'not-allowed';
-    newCard = document.createElement('div');
-    newCard.classList.add('card')
-    cardDelete = document.createElement('div');
-    cardDelete.innerHTML = 'delete';
-    cardDelete.classList.add('material-icons');
-    cardDelete.classList.add('delete-card-button');
-    cardDelete.onclick = function(){
-        // this.parentElement.parentElement.remove()
-        title = this.parentElement.parentElement.firstElementChild.innerText;
-        let titles;
-        if (localStorage.getItem('xbt@p0$SW%&j1P%l%PHh') === null) {
-            titles = [];
-        } else {
-            titles = JSON.parse(localStorage.getItem('xbt@p0$SW%&j1P%l%PHh'));
-        }
-        console.log(titles.indexOf(titles))
-        this.parentElement.parentElement.remove()
-        titles.splice(titles.indexOf(title), 1)
-        console.log(titles)
-        localStorage.setItem('xbt@p0$SW%&j1P%l%PHh', JSON.stringify(titles));
-        localStorage.removeItem(title)
-    }
-    this.parentNode.insertBefore(newCard, this)
-    newAddBtn = document.createElement('button');
-    newAddBtn.id = 'addItemBtn';
-    newAddBtn.classList.add('addItemBtn');
-    newAddBtn.innerText = 'Add Item +';
-    newTitleInput = document.createElement('input');
-    addTitleButton = document.createElement('button');
-    addTitleButton.innerText = 'Add Card';
-    addTitleButton.classList.add('add-item-button');
-    cancelTitleButton = document.createElement('button');
-    cancelTitleButton.innerText = 'X';
-    cancelTitleButton.onclick = function(){
-        newCard.remove()
-        document.getElementById('addCardBtn').disabled = false;
-        document.getElementById('addCardBtn').style.cursor = 'pointer';
-    }
-    cancelTitleButton.classList.add('cancel-item-button');
-    addTitleButton.onclick = function(){
-        var isThere = 0;
-        elemTitle = document.querySelectorAll('.title')
-        for (var z = 0; z < elemTitle.length; z++) {
-            if (newTitleInput.value == elemTitle[z].innerText) {
-                isThere++;
-            }
-            if (newTitleInput.value === 'xbt@p0$SW%&j1P%l%PHh'){
-                isThere++;
-            }
-        }
-        document.getElementById('addCardBtn').disabled = false;
-        document.getElementById('addCardBtn').style.cursor = 'pointer';
-
-        if (/\S/.test(newTitleInput.value) && isThere == 0) {
-            document.getElementById('addCardBtn').parentElement.insertBefore(newCard, document.getElementById('addCardBtn'));
-            newTitle = document.createElement('p');
-            newTitle.innerText = newTitleInput.value;
-            newTitle.classList.add('title');
-            newTitleInput.remove();
-            this.remove()
-            cancelTitleButton.remove()
-            addCancelButton.remove()
-            newCard.appendChild(newTitle);
-            newCard.appendChild(newAddBtn);
-            anotherDiv = document.createElement('div')
-            newCard.appendChild(anotherDiv);
-            anotherDiv.appendChild(newAddBtn)
-            anotherDiv.classList.add('delete-add-buttons')
-            anotherDiv.appendChild(cardDelete)
-            saveTitle(newTitleInput.value);
-            refresh();
-        } else {
-            newCard.remove()
-            document.getElementById('noTitle').style.display = 'inline';
-        }
-    }
-    addCancelButton = document.createElement('div');
-    addCancelButton.classList.add('add-cancel-buttons')
-    addCancelButton.style.marginTop = '.5rem'
-    newTitleInput.classList.add('title-input');
-    newTitleInput.placeholder = 'Title:';
-    newCard.appendChild(newTitleInput)
-    newCard.appendChild(addCancelButton);
-    addCancelButton.appendChild(addTitleButton)
-    addCancelButton.appendChild(cancelTitleButton);
-    newTitleInput.focus()
-    newTitleInput.addEventListener('keypress', (e) => {
-        var code = (e.keyCode ? e.keyCode : e.which);
-        if (code == 13) {
-            cancelTitleButton.remove()
-            addTitleButton.remove()
-            addCancelButton.remove()
-            var isThere = 0;
-            elemTitle = document.querySelectorAll('.title')
-            for (var z = 0; z < elemTitle.length; z++) {
-                if (newTitleInput.value == elemTitle[z].innerText) {
-                    isThere++;
-                }
-                if (newTitleInput.value === 'xbt@p0$SW%&j1P%l%PHh'){
-                    isThere++;
-                }
-            }
-            document.getElementById('addCardBtn').disabled = false;
-            document.getElementById('addCardBtn').style.cursor = 'pointer';
-
-            if (/\S/.test(newTitleInput.value) && isThere == 0) {
-                this.parentNode.insertBefore(newCard, this);
-                newTitle = document.createElement('p');
-                newTitle.innerText = newTitleInput.value;
-                newTitle.classList.add('title');
-                newTitleInput.remove();
-                newCard.appendChild(newTitle);
-                newCard.appendChild(newAddBtn);
-                anotherDiv = document.createElement('div')
-                newCard.appendChild(anotherDiv);
-                anotherDiv.appendChild(newAddBtn)
-                anotherDiv.classList.add('delete-add-buttons')
-                anotherDiv.appendChild(cardDelete)
-                saveTitle(newTitleInput.value);
-                refresh();
-            } else {
-                newCard.remove()
-                document.getElementById('noTitle').style.display = 'inline';
-            }
+fetch('https://api.coingecko.com/api/v3/coins/list?include_platform=false')
+    .then(response => response.json())
+    .then(data => {
+        for (i = 0; i < data.length; i++) {
+            newLi = document.createElement('li');
+            newLi.innerText = data[i].name + ' (' + data[i].symbol.toUpperCase() + ')';
+            document.querySelector('.searchResults').appendChild(newLi)
         }
     })
-}
 
-document.getElementById('okayMsgBtn').onclick = function () {
-    document.getElementById('noTitle').style.display = 'none';
-}
+searchBar = document.querySelector('.mainSearch');
 
 
-function saveTitle(title) {
-    //Check if there is already things in there
-    let titles;
-    if (localStorage.getItem('xbt@p0$SW%&j1P%l%PHh') === null) {
-        titles = [];
+document.addEventListener('DOMContentLoaded', getCurrencies);
+document.querySelector('.addStock').addEventListener('click', searchBarFunction);
+document.querySelector('.search').addEventListener('input', filterSearch);
+document.querySelector('.mode').addEventListener('click', changeMode)
+
+function changeMode() {
+    if (this.innerText == 'dark_mode') {
+        localStorage.setItem('mode', 'dark')
+        this.innerText = 'light_mode'
+        document.querySelector("#theme-link").href = "dark.css";
     } else {
-        titles = JSON.parse(localStorage.getItem('xbt@p0$SW%&j1P%l%PHh'));
-    }
-    titles.push(title);
-    localStorage.setItem('xbt@p0$SW%&j1P%l%PHh', JSON.stringify(titles));
-}
-
-
-function getTitle() {
-    //Check if there is already things in there
-    let titles;
-    if (localStorage.getItem('xbt@p0$SW%&j1P%l%PHh') === null) {
-        titles = [];
-    } else {
-        titles = JSON.parse(localStorage.getItem('xbt@p0$SW%&j1P%l%PHh'));
-    }
-
-
-    titles.forEach(function (title) {
-        newDiv = document.createElement('div');
-        newDiv.classList.add("card");
-        cardDelete = document.createElement('div');
-        cardDelete.innerHTML = 'delete';
-        cardDelete.classList.add('material-icons');
-        cardDelete.classList.add('delete-card-button');
-        cardDelete.onclick = function(){
-            // this.parentElement.parentElement.remove()
-            title = this.parentElement.parentElement.firstElementChild.innerText;
-            let titles;
-            if (localStorage.getItem('xbt@p0$SW%&j1P%l%PHh') === null) {
-                titles = [];
-            } else {
-                titles = JSON.parse(localStorage.getItem('xbt@p0$SW%&j1P%l%PHh'));
-            }
-            console.log(titles.indexOf(titles))
-            this.parentElement.parentElement.remove()
-            titles.splice(titles.indexOf(title), 1)
-            console.log(titles)
-            localStorage.setItem('xbt@p0$SW%&j1P%l%PHh', JSON.stringify(titles));
-            localStorage.removeItem(title)
-        }
-        document.getElementById('cards').insertBefore(newDiv, document.getElementById('addCardBtn'))
-        newTitle = document.createElement('p');
-        newTitle.classList.add('title');
-        newTitle.innerText = title;
-        newDiv.appendChild(newTitle);
-        newAddBtn = document.createElement('button');
-        newAddBtn.id = 'addItemBtn';
-        newAddBtn.classList.add('addItemBtn');
-        newAddBtn.innerText = 'Add Item +';
-        anotherDiv = document.createElement('div')
-        anotherDiv.classList.add('delete-add-buttons')
-        newDiv.appendChild(anotherDiv);
-        anotherDiv.appendChild(newAddBtn)
-        anotherDiv.appendChild(cardDelete)
-        refresh();
-    })
-}
-
-function saveText(text, thisElement) {
-    finalThisElement = thisElement.parentElement.parentElement.firstElementChild.innerText;
-    let texts;
-    if (localStorage.getItem(finalThisElement) === null) {
-        texts = [];
-    } else {
-        texts = JSON.parse(localStorage.getItem(finalThisElement));
-    }
-    texts.push(text);
-    localStorage.setItem(finalThisElement, JSON.stringify(texts));
-
-}
-
-
-function getText() {
-    titleClass = document.querySelectorAll('.title')
-    for (var x = 0; x < titleClass.length; x++) {
-        let titleClasses = titleClass[x].innerText;
-        if (localStorage.getItem(titleClasses) === null) {
-            titleClasses = [];
-            // remove empty card
-            // titleClass[x].parentElement.remove()
-            // let titles;
-            // if (localStorage.getItem('xbt@p0$SW%&j1P%l%PHh') === null) {
-            //     titles = [];
-            // } else {
-            //     titles = JSON.parse(localStorage.getItem('xbt@p0$SW%&j1P%l%PHh'));
-            // }
-            // titles.splice(titles.indexOf(titleClass[x].innerText), 1)
-            // localStorage.setItem('xbt@p0$SW%&j1P%l%PHh', JSON.stringify(titles));
-
-        } else {
-            titleClasses = JSON.parse(localStorage.getItem(titleClasses))
-        }
-        titleClassesFinal = titleClasses.reverse();
-        titleClassesFinal.forEach(function (text) {
-            newItemCard = document.createElement('div');
-            newItemCard.classList.add('item-card');
-            titleClass[x].parentElement.insertBefore(newItemCard, titleClass[x].parentElement.children[1])
-            newItemCardText = document.createElement('p');
-            newItemCardText.innerText = text;
-            newItemCardText.classList.add('item-text');
-            newItemCard.appendChild(newItemCardText);
-            newThreeDots = document.createElement('span')
-            newThreeDots.innerHTML = 'delete';
-            newThreeDots.classList.add('three-dots');
-            newThreeDots.classList.add('material-icons');
-            newThreeDots.onclick = function () {
-                let title = this.parentElement.parentElement.firstElementChild.innerText;
-                if (localStorage.getItem(title) === null) {
-                    titles = [];
-                } else {
-                    titles = JSON.parse(localStorage.getItem(title))
-                }
-                titles.splice(titles.indexOf(this.parentElement.firstElementChild.innerText), 1)
-                localStorage.setItem(title, JSON.stringify(titles));
-                this.parentElement.remove()
-            }
-            newItemCard.appendChild(newThreeDots);
-
-        })
+        localStorage.setItem('mode', 'light')
+        this.innerText = 'dark_mode'
+        document.querySelector("#theme-link").href = "light.css";
     }
 }
 
-
-
-document.getElementById('modeChange').addEventListener("click", function () {
-    if (theme.getAttribute("href") == "light.css") {
-        theme.href = "dark.css";
-        document.getElementById('modeChange').innerText = 'light_mode';
-        localStorage.setItem('current', 'dark');
-    } else {
-        theme.href = "light.css";
-        document.getElementById('modeChange').innerText = 'dark_mode';
-        localStorage.setItem('current', 'light');
-    }
-});
-
-
-
-if (localStorage.getItem('current') === 'dark') {
-    theme.href = "dark.css";
-    document.getElementById('modeChange').innerText = 'light_mode';
+if (localStorage.getItem('mode') === 'dark') {
+    document.querySelector("#theme-link").href = "dark.css";
+    document.querySelector('.mode').innerText = 'light_mode'
 } else {
-    theme.href = "light.css";
-    document.getElementById('modeChange').innerText = 'dark_mode';
+    document.querySelector("#theme-link").href = "light.css";
+    document.querySelector('.mode').innerText = 'dark_mode'
+}
+
+
+document.onclick = function (e) {
+    if (e.target.tagName == 'LI') {
+
+        currencySearch = e.target.innerText.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-');
+        var regExp = /\(([^)]+)\)/;
+        currency = e.target.innerText.split(" ")[0];
+        symbol = regExp.exec(e.target.innerText)[1];
+        fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + currencySearch.replace(/\s+/g, '-').toLowerCase() + '&vs_currencies=usd&include_24hr_change=true')
+            .then(response => response.json())
+            .then(data => {
+                let currencies;
+                if (localStorage.getItem('currencies') === null) {
+                    currencies = [];
+                } else {
+                    currencies = JSON.parse(localStorage.getItem('currencies'));
+                }
+                currencies.push(e.target.innerText.replace(/ *\([^)]*\) */g, ""));
+                localStorage.setItem('currencies', JSON.stringify(currencies));
+
+                searchBar.classList.remove('topToBottom')
+                searchBar.classList.add('bottomToTop')
+                document.querySelector('.addStock').style.transform = "rotate(0deg)";
+                searchBar.style.top = "-50%";
+                setTimeout(function () {
+                    document.querySelector('.searchInput').value = '';
+                    searchBar.style.display = "none";
+                    hiddenLi = 7;
+                    document.querySelector('.searchResults').style.display = ''
+                    li = document.querySelector('.searchResults').getElementsByTagName("li");
+                    for (i = 0; i < li.length; i++) {
+                        li[i].style.display = 'none';
+                    }
+                }, 300)
+                cryptoDiv = document.createElement('div');
+                cryptoDiv.classList.add('crypto');
+                document.querySelector('.cryptos').appendChild(cryptoDiv);
+
+                deleteDiv = document.createElement('span');
+                deleteDiv.classList.add('deleteButton');
+                deleteDiv.classList.add('material-icons');
+                deleteDiv.innerHTML = 'delete';
+                deleteDiv.onclick = function (currency) {
+                    let currencies;
+                    if (localStorage.getItem('currencies') === null) {
+                        currencies = [];
+                    } else {
+                        currencies = JSON.parse(localStorage.getItem('currencies'));
+                    }
+                    currencies.splice(currencies.indexOf(currency), 1);
+                    localStorage.setItem('currencies', JSON.stringify(currencies));
+                    this.parentElement.remove()
+                }
+                cryptoDiv.appendChild(deleteDiv);
+
+                cryptoName = document.createElement('div');
+                cryptoName.innerText = e.target.innerText.replace(/ *\([^)]*\) */g, "");
+                
+                cryptoName.classList.add('name');
+                cryptoDiv.appendChild(cryptoName);
+
+                cryptoSymbol = document.createElement('div');
+                cryptoSymbol.innerText = symbol;
+                cryptoSymbol.classList.add('symbol');
+                cryptoDiv.appendChild(cryptoSymbol);
+
+                cyrptoPrice = document.createElement('div');
+                cyrptoPrice.innerText = data[currencySearch.replace(/\s+/g, '-').toLowerCase()].usd;
+                cyrptoPrice.classList.add('price');
+                cryptoDiv.appendChild(cyrptoPrice);
+
+                cryptoChange = document.createElement('div');
+                try{newData = data[currencySearch].usd_24h_change}
+                catch{location.reload()}
+                if (newData == null || data[currencySearch].usd_24h_change == undefined) {
+                    cryptoChange.innerText = 'unknown';
+                    cryptoChange.style.backgroundColor = 'grey';
+                    cryptoChange.style.padding = '3px';
+                    cryptoChange.style.color = 'white';
+                    newCryptoDiv.style.borderLeft = '10px solid grey'
+                } else {
+                    cryptoChange.innerText = data[currencySearch].usd_24h_change.toFixed(2);
+
+                    cryptoChange.classList.add('change');
+                    if (cryptoChange.innerText.includes("-")) {
+                        cryptoChange.style.backgroundColor = 'red';
+                        newCryptoDiv.style.borderLeft = '10px solid red'
+                    } else {
+                        cryptoChange.style.backgroundColor = 'lime';
+                        newCryptoDiv.style.borderLeft = '10px solid lime'
+                    }
+                }
+                cryptoChange.classList.add('change');
+                cryptoDiv.appendChild(cryptoChange);
+
+            })
+    }
 }
 
 
 
-// function edit(myElement){
-//     newTextArea = document.createElement('textarea');
-//     newTextArea.classList.add('item-input')
-//     newTextArea.id = 'itemInput';
-//     newTextArea.placeholder = 'Item Here';
-//     newTextArea.cols = '30';
-//     newTextArea.rows = '5';
-//     textareaButtons = document.createElement('div');
-//     textareaButtons.classList.add('newAreaButtons');
-//     addButton = document.createElement('button');
-//     addButton.classList.add('add-item-button');
-//     addButton.innerText = 'Edit Item';
-//     addButton.onclick = function(){
-//         newTitle = this.parentElement.parentElement.firstElementChild.innerText;
-//         localStorage.getItem(newTitle);
-//         console.log(localStorage.getItem(newTitle).indexOf(myElement.parentNode.firstElementChild.innerText));
-//         newTextArea.style.display = 'none';
-//         textareaButtons.style.display = 'none';
-//         itemCard = document.createElement('div');
-//         itemCard.classList.add('item-card');
-//         itemText = document.createElement('p');
-//         itemText.innerText = newTextArea.value;
-//         newTextArea.value = '';
-//         itemText.classList.add('item-text');
-//         itemCard.appendChild(itemText);
-//         threeDots = document.createElement('span');
-//         threeDots.innerHTML = 'delete';
-//         threeDots.classList.add('three-dots');
-//         threeDots.classList.add('material-icons');
-//         threeDots.onclick = function () {
-//             let title = myElement.parentElement.parentElement.firstElementChild.innerText;
-//             console.log(title)
-//             if (localStorage.getItem(title) === null) {
-//                 titles = [];
-//             } else {
-//                 titles = JSON.parse(localStorage.getItem(title))
-//             }
-//             titles.splice(titles.indexOf(myElement.parentElement.parentElement.firstElementChild.innerText), 1)
-//             localStorage.setItem(title, JSON.stringify(titles));
-//             myElement.parentElement.remove()
-//         }
-        
-//         itemCard.appendChild(threeDots);
-//         this.parentElement.parentElement.replaceChild(itemCard, newTextArea)
-//     }
-//     cancelButton = document.createElement('button');
-//     cancelButton.classList.add('cancel-item-button');
-//     cancelButton.innerText = 'X';
-//     previousItemText = myElement.parentElement.firstElementChild.innerText;
-//     cancelButton.onclick = function(){
-//         newTextArea.style.display = 'none';
-//         textareaButtons.style.display = 'none';
-//         itemCard = document.createElement('div');
-//         itemCard.classList.add('item-card');
-//         itemText = document.createElement('p');
-//         itemText.innerText = previousItemText;
-//         itemText.classList.add('item-text');
-//         itemCard.appendChild(itemText);
-//         threeDots = document.createElement('span');
-//         threeDots.innerHTML = 'delete';
-//         threeDots.classList.add('three-dots');
-//         threeDots.classList.add('material-icons');
-//         threeDots.onclick = function () {
-//             let title = myElement.parentElement.parentElement.firstElementChild.innerText;
-//             console.log(title)
-//             if (localStorage.getItem(title) === null) {
-//                 titles = [];
-//             } else {
-//                 titles = JSON.parse(localStorage.getItem(title))
-//             }
-//             titles.splice(titles.indexOf(myElement.parentElement.parentElement.firstElementChild.innerText), 1)
-//             localStorage.setItem(title, JSON.stringify(titles));
-//             myElement.parentElement.remove()
-//         }
-        
-//         itemCard.appendChild(threeDots);
-//         this.parentElement.parentElement.replaceChild(itemCard, newTextArea)
+function searchBarFunction() {
+    if (searchBar.style.display == "inline") {
+        searchBar.classList.remove('topToBottom')
+        searchBar.classList.add('bottomToTop')
+        document.querySelector('.addStock').style.transform = "rotate(0deg)";
+        searchBar.style.top = "-50%";
+        setTimeout(function () {
+            document.querySelector('.searchInput').value = '';
+            searchBar.style.display = "none";
+            hiddenLi = 7;
+            document.querySelector('.searchResults').style.display = ''
+            li = document.querySelector('.searchResults').getElementsByTagName("li");
+            for (i = 0; i < li.length; i++) {
+                li[i].style.display = 'none';
+            }
+        }, 300)
+    } else {
+        searchBar.classList.remove('bottomToTop')
+        searchBar.classList.add('topToBottom')
+        searchBar.style.display = "inline";
+        document.querySelector('.addStock').style.transform = "rotate(45deg) scale(1.5)";
+        searchBar.style.top = "50%";
+        document.querySelector('.searchInput').focus();
+    }
+}
 
-//     }
-//     textareaButtons.appendChild(addButton);
-//     textareaButtons.appendChild(cancelButton);
-//     myElement.parentElement.parentElement.replaceChild(newTextArea, myElement.parentNode)
-//     newTextArea.parentElement.insertBefore(textareaButtons, newTextArea.parentElement.lastChild)
-    
-// }
+
+function getCurrencies() {
+    let currencies;
+    if (localStorage.getItem('currencies') === null) {
+        currencies = [];
+    } else {
+        currencies = JSON.parse(localStorage.getItem('currencies'));
+    }
+    currencies.forEach(function (currency) {
+        fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false')
+            .then(response => response.json())
+            .then(data => {
+                currencySymbol = data.symbol;
+            })
+        fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '&vs_currencies=usd&include_24hr_change=true')
+            .then(response => response.json())
+            .then(data => {
+
+
+
+
+                newCryptoDiv = document.createElement('div');
+                newCryptoDiv.classList.add('crypto');
+                document.querySelector('.cryptos').appendChild(newCryptoDiv);
+
+                newDeleteDiv = document.createElement('span');
+                newDeleteDiv.classList.add('deleteButton');
+                newDeleteDiv.classList.add('material-icons');
+                newDeleteDiv.innerHTML = 'delete';
+                newDeleteDiv.onclick = function (currency) {
+                    let currencies;
+                    if (localStorage.getItem('currencies') === null) {
+                        currencies = [];
+                    } else {
+                        currencies = JSON.parse(localStorage.getItem('currencies'));
+                    }
+                    currencies.splice(currencies.indexOf(currency), 1);
+                    localStorage.setItem('currencies', JSON.stringify(currencies));
+                    this.parentElement.remove()
+                }
+                newCryptoDiv.appendChild(newDeleteDiv);
+
+                newCryptoName = document.createElement('div');
+                newCryptoName.innerText = currency;
+                newCryptoName.classList.add('name');
+                newCryptoDiv.appendChild(newCryptoName);
+
+                newCryptoSymbol = document.createElement('div');
+                
+                try{newCryptoSymbol.innerText = currencySymbol.toUpperCase();}
+                catch{location.reload()}
+                newCryptoSymbol.classList.add('symbol');
+                newCryptoDiv.appendChild(newCryptoSymbol);
+
+                newCyrptoPrice = document.createElement('div');
+                newCurrency = currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase()
+                newCyrptoPrice.innerText = data[newCurrency].usd;
+                newCyrptoPrice.classList.add('price');
+                newCryptoDiv.appendChild(newCyrptoPrice);
+
+                newCryptoChange = document.createElement('div');
+                if (data[newCurrency].usd_24h_change == null || data[newCurrency].usd_24h_change == undefined) {
+                    newCryptoChange.innerText = 'unknown';
+                    newCryptoChange.style.backgroundColor = 'grey';
+                    newCryptoChange.style.padding = '3px';
+                    newCryptoChange.style.color = 'white';
+                    newCryptoDiv.style.borderLeft = '10px solid grey'
+                } else {
+                    newCryptoChange.innerText = data[newCurrency].usd_24h_change.toFixed(2);
+
+                    newCryptoChange.classList.add('change');
+                    if (newCryptoChange.innerText.includes("-")) {
+                        newCryptoChange.style.backgroundColor = 'red';
+                        newCryptoDiv.style.borderLeft = '10px solid red'
+                    } else {
+                        newCryptoChange.style.backgroundColor = 'lime';
+                        newCryptoDiv.style.borderLeft = '10px solid lime'
+                    }
+                }
+                newCryptoChange.classList.add('change');
+                newCryptoDiv.appendChild(newCryptoChange);
+
+
+            })
+
+    })
+}
+
+
+function filterSearch() {
+    var input, filter, ul, li, i, txtValue;
+    input = document.querySelector('.searchInput')
+    filter = input.value.toUpperCase();
+    ul = document.querySelector('.searchResults')
+    li = ul.getElementsByTagName("li");
+    var allHiddenLiElements = 0
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].textContent || li[i].innerText;
+        // if(li[i].innerText.indexOf('.') !== -1){
+        //     li[i].style.display = "none";
+        // }
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            // console.log(li[i].innerText)
+            li[i].style.display = "block";
+        } else {
+            li[i].style.display = "none";
+        }
+        if (li[i].style.display === "none") {
+            allHiddenLiElements++
+        }
+        if (allHiddenLiElements == li.length || filter == "") {
+            ul.style.display = 'none';
+        } else {
+            ul.style.display = "";
+        }
+    }
+}
+
+//chart:   https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=max
