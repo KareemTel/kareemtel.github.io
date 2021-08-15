@@ -285,7 +285,8 @@
   }
   
   .crypto{
-    width: 90%;
+    width: 85%;
+    overflow: scroll;
     margin: 2rem;
     margin-left: auto;
     margin-right: auto;
