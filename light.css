@@ -295,6 +295,8 @@ li:hover {
   padding: 1rem;
   font-size: 1.2rem;
   background-color: whitesmoke;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 

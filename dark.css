@@ -298,6 +298,8 @@
     padding: 1rem;
     font-size: 1.2rem;
     background-color: rgb(51, 51, 51);
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
   
   
