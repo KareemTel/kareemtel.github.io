@@ -42,7 +42,7 @@ document.onclick = function (e) {
 
         currencySearch = e.target.innerText.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-');
         var regExp = /\(([^)]+)\)/;
-        currency = e.target.innerText.split(" ")[0];
+        currency = e.target.innerText.replace(/ *\([^)]*\) */g, "");;
         symbol = regExp.exec(e.target.innerText)[1];
         fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false')
             .then(response => response.json())
