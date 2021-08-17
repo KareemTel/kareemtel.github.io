@@ -283,7 +283,6 @@ li:hover {
 
 .crypto{
   width: 85%;
-  overflow: scroll;
   margin: 2rem;
   margin-left: auto;
   margin-right: auto;
@@ -295,8 +294,13 @@ li:hover {
   padding: 1rem;
   font-size: 1.2rem;
   background-color: whitesmoke;
-  -ms-overflow-style: none;
+  overflow: hidden;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none;
+}
+
+.crypto::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
 }
 
 
@@ -336,4 +340,10 @@ li:hover {
 .icon:hover{
   opacity: 100%;
   transform: scale(1.2);
+}
+
+@media only screen and (max-width: 450px){
+  .crypto{
+    overflow-x: scroll;
+  }
 }

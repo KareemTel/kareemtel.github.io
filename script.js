@@ -44,7 +44,7 @@ document.onclick = function (e) {
         var regExp = /\(([^)]+)\)/;
         currency = e.target.innerText.split(" ")[0];
         symbol = regExp.exec(e.target.innerText)[1];
-        fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + currencySearch.replace(/\s+/g, '-').toLowerCase() + '&vs_currencies=usd&include_24hr_change=true')
+        fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false')
             .then(response => response.json())
             .then(data => {
                 let currencies;
@@ -78,14 +78,16 @@ document.onclick = function (e) {
                 deleteDiv.classList.add('deleteButton');
                 deleteDiv.classList.add('material-icons');
                 deleteDiv.innerHTML = 'delete';
-                deleteDiv.onclick = function (currency) {
+                deleteDiv.onclick = function () {
                     let currencies;
                     if (localStorage.getItem('currencies') === null) {
                         currencies = [];
                     } else {
                         currencies = JSON.parse(localStorage.getItem('currencies'));
                     }
-                    currencies.splice(currencies.indexOf(currency), 1);
+                    myIndex = currencies.indexOf(this.parentElement.childNodes[1].innerText)
+                    console.log(this.parentElement.childNodes[1].innerText)
+                    currencies.splice(currencies.indexOf(this.parentElement.childNodes[1].innerText));
                     localStorage.setItem('currencies', JSON.stringify(currencies));
                     this.parentElement.remove()
                 }
@@ -93,7 +95,7 @@ document.onclick = function (e) {
 
                 cryptoName = document.createElement('div');
                 cryptoName.innerText = e.target.innerText.replace(/ *\([^)]*\) */g, "");
-                
+
                 cryptoName.classList.add('name');
                 cryptoDiv.appendChild(cryptoName);
 
@@ -103,29 +105,91 @@ document.onclick = function (e) {
                 cryptoDiv.appendChild(cryptoSymbol);
 
                 cyrptoPrice = document.createElement('div');
-                cyrptoPrice.innerText = data[currencySearch.replace(/\s+/g, '-').toLowerCase()].usd;
+                cyrptoPrice.innerText = data.market_data.current_price.usd;
                 cyrptoPrice.classList.add('price');
                 cryptoDiv.appendChild(cyrptoPrice);
 
+                canvas = document.createElement('canvas');
+                chartId = 'chart' + 1;
+                canvas.id = chartId;
+                var ctx = canvas.getContext('2d');
+                canvas.height = '70'
+                canvas.width = '180'
+                fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '/market_chart?vs_currency=usd&days=max')
+                    .then(response => response.json())
+                    .then(data => {
+                        xs = []
+                        ys = []
+                        for (i = 0; i < data.prices.length; i++) {
+                            time = data.prices[i][0]
+                            date = new Date(time)
+                            day = date.getDay()
+                            month = date.getMonth()
+                            year = date.getFullYear()
+                            price = data.prices[i][1]
+                            finalDate = day + '/' + month + '/' + year
+                            xs.push(finalDate)
+                            ys.push(price)
+                        }
+                        window[chartId] = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: xs,
+                                datasets: [{
+                                    label: false,
+                                    data: ys,
+                                    borderColor: 'gray',
+                                    borderWidth: 2.5
+                                }]
+                            },
+                            options: {
+                                elements: {
+                                    point: {
+                                        radius: 0
+                                    }
+                                },
+
+                                plugins: {
+                                    legend: false
+                                },
+                                responsive: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        display: false
+                                    },
+                                    x: {
+                                        display: false
+                                    }
+                                }
+                            },
+                        });
+                    })
+                cryptoDiv.appendChild(canvas)
+
+
                 cryptoChange = document.createElement('div');
-                try{newData = data[currencySearch].usd_24h_change}
-                catch{location.reload()}
-                if (newData == null || data[currencySearch].usd_24h_change == undefined) {
+                try {
+                    newData = data.market_data.price_change_percentage_24h
+                } catch{
+                    location.reload()
+                }
+                if (newData == null || newData == undefined) {
                     cryptoChange.innerText = 'unknown';
                     cryptoChange.style.backgroundColor = 'grey';
                     cryptoChange.style.padding = '3px';
                     cryptoChange.style.color = 'white';
-                    newCryptoDiv.style.borderLeft = '10px solid grey'
+                    cryptoDiv.style.borderLeft = '10px solid grey'
                 } else {
-                    cryptoChange.innerText = data[currencySearch].usd_24h_change.toFixed(2);
+                    cryptoChange.innerText = newData.toFixed(2);
 
                     cryptoChange.classList.add('change');
                     if (cryptoChange.innerText.includes("-")) {
                         cryptoChange.style.backgroundColor = 'red';
-                        newCryptoDiv.style.borderLeft = '10px solid red'
+                        cryptoDiv.style.borderLeft = '10px solid red'
                     } else {
                         cryptoChange.style.backgroundColor = 'lime';
-                        newCryptoDiv.style.borderLeft = '10px solid lime'
+                        cryptoDiv.style.borderLeft = '10px solid lime'
                     }
                 }
                 cryptoChange.classList.add('change');
@@ -171,18 +235,11 @@ function getCurrencies() {
     } else {
         currencies = JSON.parse(localStorage.getItem('currencies'));
     }
-    currencies.forEach(function (currency) {
-        fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '?localization=false&tickers=false&market_data=false&community_data=false&developer_data=false&sparkline=false')
+    currencies.forEach(function (currency, ind) {
+
+        fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false')
             .then(response => response.json())
             .then(data => {
-                currencySymbol = data.symbol;
-            })
-        fetch('https://api.coingecko.com/api/v3/simple/price?ids=' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '&vs_currencies=usd&include_24hr_change=true')
-            .then(response => response.json())
-            .then(data => {
-
-
-
 
                 newCryptoDiv = document.createElement('div');
                 newCryptoDiv.classList.add('crypto');
@@ -192,14 +249,16 @@ function getCurrencies() {
                 newDeleteDiv.classList.add('deleteButton');
                 newDeleteDiv.classList.add('material-icons');
                 newDeleteDiv.innerHTML = 'delete';
-                newDeleteDiv.onclick = function (currency) {
+                newDeleteDiv.onclick = function () {
+                    console.log(currency)
                     let currencies;
                     if (localStorage.getItem('currencies') === null) {
                         currencies = [];
                     } else {
                         currencies = JSON.parse(localStorage.getItem('currencies'));
                     }
-                    currencies.splice(currencies.indexOf(currency), 1);
+                    myIndex = currencies.indexOf(currency)
+                    currencies.splice(currencies.indexOf(currency));
                     localStorage.setItem('currencies', JSON.stringify(currencies));
                     this.parentElement.remove()
                 }
@@ -211,27 +270,82 @@ function getCurrencies() {
                 newCryptoDiv.appendChild(newCryptoName);
 
                 newCryptoSymbol = document.createElement('div');
-                
-                try{newCryptoSymbol.innerText = currencySymbol.toUpperCase();}
-                catch{location.reload()}
+                newCryptoSymbol.innerText = data.symbol.toUpperCase();
                 newCryptoSymbol.classList.add('symbol');
                 newCryptoDiv.appendChild(newCryptoSymbol);
 
                 newCyrptoPrice = document.createElement('div');
-                newCurrency = currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase()
-                newCyrptoPrice.innerText = data[newCurrency].usd;
+                newCyrptoPrice.innerText = data.market_data.current_price.usd;
                 newCyrptoPrice.classList.add('price');
                 newCryptoDiv.appendChild(newCyrptoPrice);
 
+                newCanvas = document.createElement('canvas');
+                chartId = 'chart' + ind;
+                newCanvas.id = chartId;
+                var ctx = newCanvas.getContext('2d');
+                newCanvas.height = '70'
+                newCanvas.width = '180'
+                fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '/market_chart?vs_currency=usd&days=max')
+                    .then(response => response.json())
+                    .then(data => {
+                        xs = []
+                        ys = []
+                        for (i = 0; i < data.prices.length; i++) {
+                            time = data.prices[i][0]
+                            date = new Date(time)
+                            day = date.getDay()
+                            month = date.getMonth()
+                            year = date.getFullYear()
+                            price = data.prices[i][1]
+                            finalDate = day + '/' + month + '/' + year
+                            xs.push(finalDate)
+                            ys.push(price)
+                        }
+                        window[chartId] = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: xs,
+                                datasets: [{
+                                    label: false,
+                                    data: ys,
+                                    borderColor: 'gray',
+                                    borderWidth: 2.5
+                                }]
+                            },
+                            options: {
+                                elements: {
+                                    point: {
+                                        radius: 0
+                                    }
+                                },
+
+                                plugins: {
+                                    legend: false
+                                },
+                                responsive: false,
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        display: false
+                                    },
+                                    x: {
+                                        display: false
+                                    }
+                                }
+                            },
+                        });
+                    })
+                newCryptoDiv.appendChild(newCanvas)
+
                 newCryptoChange = document.createElement('div');
-                if (data[newCurrency].usd_24h_change == null || data[newCurrency].usd_24h_change == undefined) {
+                if (data.market_data.price_change_percentage_24h == null || data.market_data.price_change_percentage_24h == undefined) {
                     newCryptoChange.innerText = 'unknown';
                     newCryptoChange.style.backgroundColor = 'grey';
                     newCryptoChange.style.padding = '3px';
                     newCryptoChange.style.color = 'white';
                     newCryptoDiv.style.borderLeft = '10px solid grey'
                 } else {
-                    newCryptoChange.innerText = data[newCurrency].usd_24h_change.toFixed(2);
+                    newCryptoChange.innerText = data.market_data.price_change_percentage_24h.toFixed(2);
 
                     newCryptoChange.classList.add('change');
                     if (newCryptoChange.innerText.includes("-")) {
@@ -280,5 +394,3 @@ function filterSearch() {
         }
     }
 }
-
-//chart:   https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=max
