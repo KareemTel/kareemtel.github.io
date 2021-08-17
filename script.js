@@ -92,7 +92,7 @@ document.onclick = function (e) {
                         currencies = JSON.parse(localStorage.getItem('currencies'));
                     }
                     myIndex = currencies.indexOf(this.parentElement.childNodes[1].innerText)
-                    currencies.splice(currencies.indexOf(this.parentElement.childNodes[1].innerText));
+                    currencies.splice(currencies.indexOf(this.parentElement.childNodes[1].innerText), 1);
                     localStorage.setItem('currencies', JSON.stringify(currencies));
                     this.parentElement.remove()
                 }
@@ -263,7 +263,7 @@ function getCurrencies() {
                     } else {
                         currencies = JSON.parse(localStorage.getItem('currencies'));
                     }
-                    currencies.splice(currencies.indexOf(currency));
+                    currencies.splice(currencies.indexOf(currency), 1);
                     localStorage.setItem('currencies', JSON.stringify(currencies));
                     this.parentElement.remove()
                 }
