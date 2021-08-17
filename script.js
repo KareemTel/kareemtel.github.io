@@ -16,6 +16,12 @@ document.querySelector('.addStock').addEventListener('click', searchBarFunction)
 document.querySelector('.search').addEventListener('input', filterSearch);
 document.querySelector('.mode').addEventListener('click', changeMode)
 
+
+function noScroll() {
+    window.scrollTo(0, 0);
+  }
+
+
 function changeMode() {
     if (this.innerText == 'dark_mode') {
         localStorage.setItem('mode', 'dark')
@@ -203,6 +209,7 @@ document.onclick = function (e) {
 
 function searchBarFunction() {
     if (searchBar.style.display == "inline") {
+        window.removeEventListener('scroll', noScroll);
         searchBar.classList.remove('topToBottom')
         searchBar.classList.add('bottomToTop')
         document.querySelector('.addStock').style.transform = "rotate(0deg)";
@@ -218,6 +225,7 @@ function searchBarFunction() {
             }
         }, 300)
     } else {
+        window.addEventListener('scroll', noScroll);
         searchBar.classList.remove('bottomToTop')
         searchBar.classList.add('topToBottom')
         searchBar.style.display = "inline";
