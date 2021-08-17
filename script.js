@@ -92,7 +92,6 @@ document.onclick = function (e) {
                         currencies = JSON.parse(localStorage.getItem('currencies'));
                     }
                     myIndex = currencies.indexOf(this.parentElement.childNodes[1].innerText)
-                    console.log(this.parentElement.childNodes[1].innerText)
                     currencies.splice(currencies.indexOf(this.parentElement.childNodes[1].innerText));
                     localStorage.setItem('currencies', JSON.stringify(currencies));
                     this.parentElement.remove()
@@ -258,14 +257,12 @@ function getCurrencies() {
                 newDeleteDiv.classList.add('material-icons');
                 newDeleteDiv.innerHTML = 'delete';
                 newDeleteDiv.onclick = function () {
-                    console.log(currency)
                     let currencies;
                     if (localStorage.getItem('currencies') === null) {
                         currencies = [];
                     } else {
                         currencies = JSON.parse(localStorage.getItem('currencies'));
                     }
-                    myIndex = currencies.indexOf(currency)
                     currencies.splice(currencies.indexOf(currency));
                     localStorage.setItem('currencies', JSON.stringify(currencies));
                     this.parentElement.remove()
@@ -383,11 +380,7 @@ function filterSearch() {
     var allHiddenLiElements = 0
     for (i = 0; i < li.length; i++) {
         txtValue = li[i].textContent || li[i].innerText;
-        // if(li[i].innerText.indexOf('.') !== -1){
-        //     li[i].style.display = "none";
-        // }
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            // console.log(li[i].innerText)
             li[i].style.display = "block";
         } else {
             li[i].style.display = "none";
