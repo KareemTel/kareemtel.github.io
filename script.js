@@ -14,12 +14,39 @@ searchBar = document.querySelector('.mainSearch');
 document.addEventListener('DOMContentLoaded', getCurrencies);
 document.querySelector('.addStock').addEventListener('click', searchBarFunction);
 document.querySelector('.search').addEventListener('input', filterSearch);
-document.querySelector('.mode').addEventListener('click', changeMode)
+document.querySelector('.mode').addEventListener('click', changeMode);
+document.querySelector('.closeSettings').addEventListener('click', closeSettings);
+document.querySelector('.options').addEventListener('click', openSettings);
+document.querySelector('.chartSwitch').addEventListener('input', toggleChart);
+
+
+function closeSettings() {
+    document.querySelector('.settings').style.display = 'none';
+}
+
+function openSettings() {
+    document.querySelector('.settings').style.display = 'flex';
+}
+
+function toggleChart() {
+    chartSwitch = document.querySelector('.chartSwitch');
+    if (chartSwitch.checked == false) {
+        localStorage.setItem('chart', 'false');
+        console.log(document.getElementsByTagName('canvas'))
+        canvases = document.getElementsByTagName('canvas');
+        for (i=0; i < canvases.length; i++){
+            canvases[i].style.display = 'none';
+        }
+    } else {
+        localStorage.setItem('chart', 'true');
+        location.reload()
+    }
+}
 
 
 function noScroll() {
     window.scrollTo(0, 0);
-  }
+}
 
 
 function changeMode() {
@@ -40,6 +67,12 @@ if (localStorage.getItem('mode') === 'dark') {
 } else {
     document.querySelector("#theme-link").href = "light.css";
     document.querySelector('.mode').innerText = 'dark_mode'
+}
+
+if (localStorage.getItem('chart') === 'false') {
+    document.querySelector('.chartSwitch').checked = false;
+} else {
+    document.querySelector('.chartSwitch').checked = true;
 }
 
 
@@ -114,69 +147,71 @@ document.onclick = function (e) {
                 cyrptoPrice.classList.add('price');
                 cryptoDiv.appendChild(cyrptoPrice);
 
-                canvas = document.createElement('canvas');
-                chartId = 'chart' + 1;
-                canvas.id = chartId;
-                var ctx = canvas.getContext('2d');
-                canvas.height = '70'
-                canvas.width = '180'
-                fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '/market_chart?vs_currency=usd&days=max')
-                    .then(response => response.json())
-                    .then(data => {
-                        xs = []
-                        ys = []
-                        for (i = 0; i < data.prices.length; i++) {
-                            time = data.prices[i][0]
-                            date = new Date(time)
-                            day = date.getDay()
-                            month = date.getMonth()
-                            year = date.getFullYear()
-                            price = data.prices[i][1]
-                            finalDate = day + '/' + month + '/' + year
-                            xs.push(finalDate)
-                            ys.push(price)
-                        }
-                        window[chartId] = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: xs,
-                                datasets: [{
-                                    label: false,
-                                    data: ys,
-                                    borderColor: 'gray',
-                                    borderWidth: 2.5
-                                }]
-                            },
-                            options: {
-                                elements: {
-                                    point: {
-                                        radius: 0
-                                    }
+                if (localStorage.getItem('chart') == 'true') {
+                    canvas = document.createElement('canvas');
+                    chartId = 'chart' + 1;
+                    canvas.id = chartId;
+                    var ctx = canvas.getContext('2d');
+                    canvas.height = '70'
+                    canvas.width = '180'
+                    fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '/market_chart?vs_currency=usd&days=max')
+                        .then(response => response.json())
+                        .then(data => {
+                            xs = []
+                            ys = []
+                            for (i = 0; i < data.prices.length; i++) {
+                                time = data.prices[i][0]
+                                date = new Date(time)
+                                day = date.getDay()
+                                month = date.getMonth()
+                                year = date.getFullYear()
+                                price = data.prices[i][1]
+                                finalDate = day + '/' + month + '/' + year
+                                xs.push(finalDate)
+                                ys.push(price)
+                            }
+                            window[chartId] = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: xs,
+                                    datasets: [{
+                                        label: false,
+                                        data: ys,
+                                        borderColor: 'gray',
+                                        borderWidth: 2.5
+                                    }]
                                 },
-
-                                plugins: {
-                                    legend: false
-                                },
-                                responsive: false,
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        display: false
+                                options: {
+                                    elements: {
+                                        point: {
+                                            radius: 0
+                                        }
                                     },
-                                    x: {
-                                        display: false
+
+                                    plugins: {
+                                        legend: false
+                                    },
+                                    responsive: false,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            display: false
+                                        },
+                                        x: {
+                                            display: false
+                                        }
                                     }
-                                }
-                            },
-                        });
-                    })
-                cryptoDiv.appendChild(canvas)
+                                },
+                            });
+                        })
+                    cryptoDiv.appendChild(canvas)
+                }
 
 
                 cryptoChange = document.createElement('div');
                 try {
                     newData = data.market_data.price_change_percentage_24h
-                } catch{
+                } catch {
                     location.reload()
                 }
                 if (newData == null || newData == undefined) {
@@ -284,63 +319,66 @@ function getCurrencies() {
                 newCyrptoPrice.classList.add('price');
                 newCryptoDiv.appendChild(newCyrptoPrice);
 
-                newCanvas = document.createElement('canvas');
-                chartId = 'chart' + ind;
-                newCanvas.id = chartId;
-                var ctx = newCanvas.getContext('2d');
-                newCanvas.height = '70'
-                newCanvas.width = '180'
-                fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '/market_chart?vs_currency=usd&days=max')
-                    .then(response => response.json())
-                    .then(data => {
-                        xs = []
-                        ys = []
-                        for (i = 0; i < data.prices.length; i++) {
-                            time = data.prices[i][0]
-                            date = new Date(time)
-                            day = date.getDay()
-                            month = date.getMonth()
-                            year = date.getFullYear()
-                            price = data.prices[i][1]
-                            finalDate = day + '/' + month + '/' + year
-                            xs.push(finalDate)
-                            ys.push(price)
-                        }
-                        window[chartId] = new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: xs,
-                                datasets: [{
-                                    label: false,
-                                    data: ys,
-                                    borderColor: 'gray',
-                                    borderWidth: 2.5
-                                }]
-                            },
-                            options: {
-                                elements: {
-                                    point: {
-                                        radius: 0
-                                    }
-                                },
 
-                                plugins: {
-                                    legend: false
+                if (localStorage.getItem('chart') == 'true') {
+                    newCanvas = document.createElement('canvas');
+                    chartId = 'chart' + ind;
+                    newCanvas.id = chartId;
+                    var ctx = newCanvas.getContext('2d');
+                    newCanvas.height = '70'
+                    newCanvas.width = '180'
+                    fetch('https://api.coingecko.com/api/v3/coins/' + currency.replace(/ *\([^)]*\) */g, "").replace(/\./g, '-').replace(/\s+/g, '-').toLowerCase() + '/market_chart?vs_currency=usd&days=max')
+                        .then(response => response.json())
+                        .then(data => {
+                            xs = []
+                            ys = []
+                            for (i = 0; i < data.prices.length; i++) {
+                                time = data.prices[i][0]
+                                date = new Date(time)
+                                day = date.getDay()
+                                month = date.getMonth()
+                                year = date.getFullYear()
+                                price = data.prices[i][1]
+                                finalDate = day + '/' + month + '/' + year
+                                xs.push(finalDate)
+                                ys.push(price)
+                            }
+                            window[chartId] = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: xs,
+                                    datasets: [{
+                                        label: false,
+                                        data: ys,
+                                        borderColor: 'gray',
+                                        borderWidth: 2.5
+                                    }]
                                 },
-                                responsive: false,
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        display: false
+                                options: {
+                                    elements: {
+                                        point: {
+                                            radius: 0
+                                        }
                                     },
-                                    x: {
-                                        display: false
+
+                                    plugins: {
+                                        legend: false
+                                    },
+                                    responsive: false,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            display: false
+                                        },
+                                        x: {
+                                            display: false
+                                        }
                                     }
-                                }
-                            },
-                        });
-                    })
-                newCryptoDiv.appendChild(newCanvas)
+                                },
+                            });
+                        })
+                    newCryptoDiv.appendChild(newCanvas)
+                }
 
                 newCryptoChange = document.createElement('div');
                 if (data.market_data.price_change_percentage_24h == null || data.market_data.price_change_percentage_24h == undefined) {

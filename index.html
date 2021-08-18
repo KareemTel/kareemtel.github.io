@@ -6,32 +6,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- HTML Meta Tags -->
+    <!-- Primary Meta Tags -->
     <title>Cryllo | Cryptocurrency Prices.</title>
+    <meta name="title" content="Cryllo | Cryptocurrency Prices.">
     <meta name="description"
         content="Get crypto prices, symbols, 24 hour change percentage, easy to use, dark / light mode, and much more...">
 
-    <!-- Facebook Meta Tags -->
-    <meta property="og:url" content="https://kareemtel.github.io/">
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kareemtel.github.io/">
     <meta property="og:title" content="Cryllo | Cryptocurrency Prices.">
     <meta property="og:description"
         content="Get crypto prices, symbols, 24 hour change percentage, easy to use, dark / light mode, and much more...">
     <meta property="og:image" content="https://kareemtel.github.io/metaimg.png">
 
-    <!-- Twitter Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:domain" content="kareemtel.github.io">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://kareemtel.github.io/">
-    <meta name="twitter:title" content="Cryllo | Cryptocurrency Prices.">
-    <meta name="twitter:description"
+    <meta property="twitter:title" content="Cryllo | Cryptocurrency Prices.">
+    <meta property="twitter:description"
         content="Get crypto prices, symbols, 24 hour change percentage, easy to use, dark / light mode, and much more...">
-    <meta name="twitter:image" content="https://kareemtel.github.io/metaimg.png">
-
-
+    <meta property="twitter:image" content="https://kareemtel.github.io/metaimg.png">
     <link id="theme-link" rel="stylesheet" href="dark.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined ">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round ">
     <script defer src="script.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="icon" type="image/png" href="cryllo.png">
@@ -41,9 +39,27 @@
     <div class="rotating"></div>
 
     <div class="icons">
+
         <span class="material-icons mode icon">
             dark_mode
         </span>
+
+        <span class="material-icons-round options icon">
+            settings
+        </span>
+    </div>
+
+    <div class="settings">
+        <span class="material-icons-round icon closeSettings">
+            close
+            </span>
+        <div class="chartToggleDiv">
+            <p>Chart: </p>
+            <label class="switch">
+                <input type="checkbox" class="chartSwitch" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
     </div>
 
     <button class="addStock"><span class="material-icons-outlined">
