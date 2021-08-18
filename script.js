@@ -18,6 +18,8 @@ document.querySelector('.mode').addEventListener('click', changeMode);
 document.querySelector('.closeSettings').addEventListener('click', closeSettings);
 document.querySelector('.options').addEventListener('click', openSettings);
 document.querySelector('.chartSwitch').addEventListener('input', toggleChart);
+document.querySelector('.symbolSwitch').addEventListener('input', toggleSymbol);
+document.querySelector('.nameSwitch').addEventListener('input', toggleName);
 
 
 function closeSettings() {
@@ -34,7 +36,7 @@ function toggleChart() {
         localStorage.setItem('chart', 'false');
         console.log(document.getElementsByTagName('canvas'))
         canvases = document.getElementsByTagName('canvas');
-        for (i=0; i < canvases.length; i++){
+        for (i = 0; i < canvases.length; i++) {
             canvases[i].style.display = 'none';
         }
     } else {
@@ -43,6 +45,33 @@ function toggleChart() {
     }
 }
 
+function toggleSymbol() {
+    symbolSwitch = document.querySelector('.symbolSwitch');
+    if (symbolSwitch.checked == false) {
+        localStorage.setItem('symbol', 'false');
+        symbols = document.querySelectorAll('.symbol');
+        for (i = 0; i < symbols.length; i++) {
+            symbols[i].style.display = 'none';
+        }
+    } else {
+        localStorage.setItem('symbol', 'true');
+        location.reload()
+    }
+}
+
+function toggleName() {
+    nameSwitch = document.querySelector('.nameSwitch');
+    if (nameSwitch.checked == false) {
+        localStorage.setItem('name', 'false');
+        names = document.querySelectorAll('.name');
+        for (i = 0; i < names.length; i++) {
+            names[i].style.display = 'none';
+        }
+    } else {
+        localStorage.setItem('name', 'true');
+        location.reload()
+    }
+}
 
 function noScroll() {
     window.scrollTo(0, 0);
@@ -73,6 +102,18 @@ if (localStorage.getItem('chart') === 'true') {
     document.querySelector('.chartSwitch').checked = true;
 } else {
     document.querySelector('.chartSwitch').checked = false;
+}
+
+if (localStorage.getItem('symbol') === 'false') {
+    document.querySelector('.symbolSwitch').checked = false;
+} else {
+    document.querySelector('.symbolSwitch').checked = true;
+}
+
+if (localStorage.getItem('name') === 'false') {
+    document.querySelector('.nameSwitch').checked = false;
+} else {
+    document.querySelector('.nameSwitch').checked = true;
 }
 
 
@@ -131,16 +172,19 @@ document.onclick = function (e) {
                 }
                 cryptoDiv.appendChild(deleteDiv);
 
-                cryptoName = document.createElement('div');
-                cryptoName.innerText = e.target.innerText.replace(/ *\([^)]*\) */g, "");
+                if (localStorage.getItem('name') != 'false') {
+                    cryptoName = document.createElement('div');
+                    cryptoName.innerText = e.target.innerText.replace(/ *\([^)]*\) */g, "");
 
-                cryptoName.classList.add('name');
-                cryptoDiv.appendChild(cryptoName);
-
-                cryptoSymbol = document.createElement('div');
-                cryptoSymbol.innerText = symbol;
-                cryptoSymbol.classList.add('symbol');
-                cryptoDiv.appendChild(cryptoSymbol);
+                    cryptoName.classList.add('name');
+                    cryptoDiv.appendChild(cryptoName);
+                }
+                if (localStorage.getItem('symbol') != 'false') {
+                    cryptoSymbol = document.createElement('div');
+                    cryptoSymbol.innerText = symbol;
+                    cryptoSymbol.classList.add('symbol');
+                    cryptoDiv.appendChild(cryptoSymbol);
+                }
 
                 cyrptoPrice = document.createElement('div');
                 cyrptoPrice.innerText = data.market_data.current_price.usd;
@@ -304,15 +348,19 @@ function getCurrencies() {
                 }
                 newCryptoDiv.appendChild(newDeleteDiv);
 
-                newCryptoName = document.createElement('div');
-                newCryptoName.innerText = currency;
-                newCryptoName.classList.add('name');
-                newCryptoDiv.appendChild(newCryptoName);
+                if (localStorage.getItem('name') != 'false') {
+                    newCryptoName = document.createElement('div');
+                    newCryptoName.innerText = currency;
+                    newCryptoName.classList.add('name');
+                    newCryptoDiv.appendChild(newCryptoName);
+                }
 
-                newCryptoSymbol = document.createElement('div');
-                newCryptoSymbol.innerText = data.symbol.toUpperCase();
-                newCryptoSymbol.classList.add('symbol');
-                newCryptoDiv.appendChild(newCryptoSymbol);
+                if (localStorage.getItem('symbol') != 'false') {
+                    newCryptoSymbol = document.createElement('div');
+                    newCryptoSymbol.innerText = data.symbol.toUpperCase();
+                    newCryptoSymbol.classList.add('symbol');
+                    newCryptoDiv.appendChild(newCryptoSymbol);
+                }
 
                 newCyrptoPrice = document.createElement('div');
                 newCyrptoPrice.innerText = data.market_data.current_price.usd;
