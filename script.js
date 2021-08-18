@@ -69,10 +69,10 @@ if (localStorage.getItem('mode') === 'dark') {
     document.querySelector('.mode').innerText = 'dark_mode'
 }
 
-if (localStorage.getItem('chart') === 'false') {
-    document.querySelector('.chartSwitch').checked = false;
-} else {
+if (localStorage.getItem('chart') === 'true') {
     document.querySelector('.chartSwitch').checked = true;
+} else {
+    document.querySelector('.chartSwitch').checked = false;
 }
 
 
