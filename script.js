@@ -73,10 +73,6 @@ function toggleName() {
     }
 }
 
-function noScroll() {
-    window.scrollTo(0, 0);
-}
-
 
 function changeMode() {
     if (this.innerText == 'dark_mode') {
@@ -238,7 +234,6 @@ document.onclick = function (e) {
                                     responsive: false,
                                     scales: {
                                         y: {
-                                            beginAtZero: true,
                                             display: false
                                         },
                                         x: {
@@ -287,7 +282,6 @@ document.onclick = function (e) {
 
 function searchBarFunction() {
     if (searchBar.style.display == "inline") {
-        window.removeEventListener('scroll', noScroll);
         searchBar.classList.remove('topToBottom')
         searchBar.classList.add('bottomToTop')
         document.querySelector('.addStock').style.transform = "rotate(0deg)";
@@ -303,7 +297,6 @@ function searchBarFunction() {
             }
         }, 300)
     } else {
-        window.addEventListener('scroll', noScroll);
         searchBar.classList.remove('bottomToTop')
         searchBar.classList.add('topToBottom')
         searchBar.style.display = "inline";
@@ -415,7 +408,6 @@ function getCurrencies() {
                                     responsive: false,
                                     scales: {
                                         y: {
-                                            beginAtZero: true,
                                             display: false
                                         },
                                         x: {
